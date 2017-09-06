@@ -1,0 +1,97 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="person-details-page">
+
+    <template>
+        <style include="custom-styles">
+            body {
+                @apply --layout-inline;
+                @apply --layout-center-center;
+                @apply --layout-wrap;
+                padding: 40px;
+            }
+
+            .blue [slot=header] {
+                background-color: var(--paper-light-blue-500);
+            }
+
+            paper-header-panel {
+                width: 100%;
+                height: 100%;
+                @apply --shadow-elevation-2dp;
+            }
+
+            [slot=header] {
+                height: auto;
+                font-size: 16px;
+                line-height: 60px;
+                padding: 0 10px;
+                color: white;
+                transition: height 0.2s;
+            }
+
+            #backbutton {
+                position: absolute;
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        </style>
+
+        <paper-header-panel class="blue">
+            <div slot="header">
+                <paper-icon-button id="backbutton" icon="icons:arrow-back" on-tap="_goBack"></paper-icon-button>
+                <person-header-element cn="[[cn]]" uid="[[uid]]"></person-header-element>
+            </div>
+        </paper-header-panel>
+
+        <person-function-element class="unselectable" department="[[department]]" title="[[title]]"></person-function-element>
+        <swipe-phone-element  mobile="[[mobile]]"></swipe-phone-element>
+        <paper-contact-email class="unselectable">[[mail]]</paper-contact-email>
+        <preferred-language-element class="unselectable" preferred-language="[[preferredLanguage]]"></preferred-language-element>
+
+    </template>
+
+    <script>
+        class PersonDetailsPage extends Polymer.Element {
+            static get is() { return 'person-details-page'; }
+            static get properties() {
+                return {
+                    cn: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    uid: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    department: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    title: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    mobile: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    mail: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    preferredLanguage: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+
+            _goBack() {
+                window.history.back();
+            }
+        }
+        customElements.define(PersonDetailsPage.is, PersonDetailsPage);
+    </script>
+
+</dom-module>

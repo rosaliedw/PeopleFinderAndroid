@@ -1,0 +1,79 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="search-result-element">
+
+    <template>
+
+        <style include="custom-styles">
+             :host {
+                text-align: center;
+            }
+
+            #callbutton {
+                position: relative;
+                margin-right: 0;
+            }
+           
+
+            
+        </style>
+
+        <div role="listbox">
+            <paper-card style="width: 95%; margin-top: -10px">
+                <paper-icon-item>
+                    <paper-avatar label="[[cn]]"></paper-avatar>
+
+                    <paper-item-body class="text-align-left" two-line style="margin-left: 5%;">
+                        <div>[[cn]]</div>
+                        <div secondary>[[department]], &nbsp;[[title]]</div>
+                    </paper-item-body>
+                    <paper-icon-button on-tap="callPhone" icon="communication:phone"></paper-icon-button>
+                </paper-icon-item>
+
+
+            </paper-card>
+        </div>
+
+
+    </template>
+
+    <script>
+        class SearchResultElement extends Polymer.Element {
+            static get is() { return 'search-result-element'; }
+            static get properties() {
+                return {
+                    cn: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    department: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    title: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    mobile: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+            constructor() {
+                super();
+            }
+
+            ready() {
+                super.ready();
+            }
+
+            callPhone() {
+                window.location.href = 'tel:' + this.mobile;
+            }
+
+        }
+        customElements.define(SearchResultElement.is, SearchResultElement);
+    </script>
+
+</dom-module>

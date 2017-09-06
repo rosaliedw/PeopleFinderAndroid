@@ -1,0 +1,40 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="person-function-element">
+
+    <template>
+        <style include="custom-styles">
+           
+        </style>
+
+
+  
+        <paper-icon-item class="cursor-pointer">
+            <paper-ripple></paper-ripple>
+            <iron-icon class="icon" icon="icons:work" slot="item-icon"></iron-icon>
+            <div class="text">[[department]], &nbsp; [[title]]</div>
+        </paper-icon-item>
+
+
+    </template>
+
+    <script>
+        class PersonFunctionElement extends Polymer.Element {
+            static get is() { return 'person-function-element'; }
+            static get properties() {
+                return {                   
+                    department: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    title: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+        }
+        customElements.define(PersonFunctionElement.is, PersonFunctionElement);
+    </script>
+
+</dom-module>

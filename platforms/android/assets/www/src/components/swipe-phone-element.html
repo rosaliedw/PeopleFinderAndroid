@@ -1,0 +1,92 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="swipe-phone-element">
+
+    <template>
+
+
+        <style include="custom-styles">
+            [draggable=true] {
+                cursor: move;
+            }
+        </style>
+
+        <paper-icon-item id="dragme" on-track="_handleTrack" class="item cursor-pointer" on-tap="_callPhone">
+            <paper-ripple></paper-ripple>
+            <iron-icon class="icon" icon="communication:phone" slot="item-icon"></iron-icon>
+            <div class="text unselectable">
+                [[mobile]]
+            </div>
+
+            <swipe-animation-element id="animationelement" swipe-direction="[[swipeDirection]]"></swipe-animation-element>
+
+
+        </paper-icon-item>
+
+
+    </template>
+
+    <script>
+        class SwipePhoneElement extends Polymer.GestureEventListeners(Polymer.Element) {
+            static get is() { return 'swipe-phone-element'; }
+            static get properties() {
+                return {
+                    mobile: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    swipeDirection: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+
+            _handleTrack(e) {
+
+                this._animateSwiper(e);
+
+                if (e.detail.state === 'end') {
+                    if (this._actionPermitted(e)[0]) {
+                        this._textPhone()
+                    } else if (this._actionPermitted(e)[1]) {
+                        this._callPhone();
+                    }
+                }
+            }
+
+            _textPhone() {
+                window.location.assign(encodeURI('sms:' + this.mobile));
+            }
+
+            _callPhone() {
+                window.location.assign(encodeURI('tel:' + this.mobile));
+
+            }
+
+            _actionPermitted(e) {
+                var threshold = Math.abs(e.detail.dx / this.$.dragme.offsetWidth);
+                var relativeOffset = e.detail.x / this.$.dragme.offsetWidth;
+                return [e.detail.dx > 0 && relativeOffset >= 0.6, e.detail.dx < 0 && relativeOffset <= 0.4];
+            }
+
+            _animateSwiper(e) {
+                this.set('swipeDirection', e.detail.dx < 0 ? 'left' : 'right');
+                this.$.animationelement.style['opacity'] = e.detail.state !== ('track' || 'start') ? 0 : 0.5;
+                this.$.animationelement.style['left'] = e.detail.x + 'px';
+
+                if (this._actionPermitted(e).indexOf(true) > -1) {
+                    this.$.animationelement.style['background-color'] = 'green';
+                } else {
+                    this.$.animationelement.style['background-color'] = 'blue';
+                }
+                this.$.animationelement.updateStyles();
+
+            }
+
+        }
+
+        customElements.define(SwipePhoneElement.is, SwipePhoneElement);
+    </script>
+
+</dom-module>

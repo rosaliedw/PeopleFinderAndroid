@@ -1,0 +1,72 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="swipe-animation-element">
+
+    <template>
+
+
+        <style include="custom-styles">
+             :host {
+                height: 110%;
+                position: absolute;
+                z-index: 1;
+                opacity: 0;
+                -webkit-transform: translate(-50%, 0);
+            }
+
+            #swipe-element {
+                width: 20vw;
+            }
+
+            
+        </style>
+
+        <div id="swipe-element">&nbsp;</div>
+
+        <dom-if if="{{swipeLeft}}">
+            <template>
+                    <iron-icon class="icon absolute-center" icon="communication:phone" slot="item-icon"></iron-icon>
+            </template>
+        </dom-if>
+
+        <dom-if if="{{!swipeLeft}}">
+            <template>
+                    <iron-icon class="icon absolute-center" icon="communication:textsms" slot="item-icon"></iron-icon>
+            </template>
+        </dom-if>
+
+
+
+
+    </template>
+
+    <script>
+        class SwipeAnimationElement extends Polymer.Element {
+            static get is() { return 'swipe-animation-element'; }
+            static get properties() {
+                return {
+                    swipeDirection: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: 'isSwipingLeft'
+                    }
+                }
+            }
+            ready() {
+                super.ready();
+
+                console.log(this.swipeDirection);
+
+            }
+
+            isSwipingLeft() {
+                this.swipeLeft =  this.swipeDirection === 'left' ? true : false;
+            }
+
+        }
+
+
+        customElements.define(SwipeAnimationElement.is, SwipeAnimationElement);
+    </script>
+
+</dom-module>

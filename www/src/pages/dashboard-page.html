@@ -1,0 +1,121 @@
+<!--USED TO MOCK SOME DATA -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.js"></script>
+
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="/includes.html">
+
+
+<dom-module id="dashboard-page">
+
+    <template>
+
+        <style include="custom-styles">
+
+        </style>
+
+
+        <paper-search-bar query="{{searchQuery}}" hide-filter-button="true">
+        </paper-search-bar>
+        <br>
+        <iron-ajax 
+        id="personajax" 
+        url="http://localhost:8080/person/{{searchQuery}}"
+         method='GET'
+          loading="{{loading}}" 
+          handleAs="json"
+          on-response="handleResponse">
+        </iron-ajax>
+
+        <template is="dom-if" if="{{loading}}">
+            <paper-spinner active class="horizontal-center"></paper-spinner>
+        </template>
+        <template is="dom-if" if="{{!loading}}">
+            <dom-repeat items="{{searchResults}}">
+                <template>
+                    <search-result-element cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]" mobile="[[item.mobile]]">
+                    </search-result-element>
+                    <br>
+                </template>
+            </dom-repeat>
+        </template>
+    </template>
+
+    <script>
+        class DashboardPage extends Polymer.Element {
+            static get is() { return 'dashboard-page'; }
+            static get properties() {
+                return {
+                    loading: {
+                        type: Boolean,
+                        value: true
+                    },
+                    searchQuery: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: 'search'
+                    },
+                    searchResults: {
+                        type: Array,
+                        reflectToAttribute: true
+                    },
+                    mockData: {
+                        type: Array,
+                        reflectToAttribute: true,
+                        notify: true,
+                        value: []
+                    }
+                }
+            }
+           
+
+            ready() {
+                super.ready();
+                this.removeAttribute('unresolved');
+
+                //MOCK SOME DATA
+
+                for (var i = 0; i < 100; i++) {
+
+                    this.push('mockData', {
+                        cn: faker.name.findName(),
+                        department: faker.name.jobArea(),
+                        title: faker.name.jobType(),
+                        mobile: faker.phone.phoneNumber(),
+                        id: faker.helpers.replaceSymbols('??##??')
+                    });
+                }
+
+                console.log(this.mockData);
+            }
+
+            search() {
+                if (this.searchQuery.length >= 3) {
+                    this.loading = true;
+                    this.$.personajax.generateRequest();
+                    this.searchResults = [];
+                }
+                else {
+                    this.loading = false;
+                }
+                if (this.searchQuery.length === 0) {
+                    this.searchResults = [];
+                }
+            }
+
+            handleResponse(e) {
+                //TODO parse response object to array
+                this.searchResults = e.detail.response;
+            }
+
+            hasNumber(item) {
+                return /\d/.test(item);
+            }
+
+
+
+        }
+        customElements.define(DashboardPage.is, DashboardPage);
+    </script>
+
+</dom-module>

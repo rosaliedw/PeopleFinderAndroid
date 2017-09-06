@@ -1,0 +1,8 @@
+bower_components
+build
+./idea
+node_modules
+.vscode
+npm-debug.log
+.DS_Store
+/platforms/browser/cordova/node_modules

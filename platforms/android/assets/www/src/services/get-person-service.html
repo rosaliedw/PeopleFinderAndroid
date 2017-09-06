@@ -1,0 +1,39 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/includes.html">
+
+
+<dom-module id="get-person-service">
+    <template>
+        <style>
+             :host {
+                display: none;
+            }
+        </style>
+
+        <iron-ajax 
+            id="personajax" 
+            url="http://localhost:3003/api/products" 
+            method='GET' 
+            loading="{{loading}}" 
+            handleAs="json">
+        </iron-ajax>
+    </template>
+
+    <script>
+        class getPersonService extends Polymer.Element {
+            static get is() { return 'get-person-service'; }
+            static get properties() {
+                return {
+                    loading: {
+                        type: Boolean,
+                        readOnly: true,
+                        notify: true,
+                        value: false
+                      }
+                }
+            }         
+        }
+        customElements.define(getPersonService.is, getPersonService);
+    </script>
+
+</dom-module>

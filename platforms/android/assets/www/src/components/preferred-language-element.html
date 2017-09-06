@@ -1,0 +1,37 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="preferred-language-element">
+
+    <template>
+        <style include="custom-styles">
+          
+        </style>
+
+        <paper-icon-item class="cursor-pointer">
+            <paper-ripple></paper-ripple>
+            <iron-icon class="icon" icon="icons:language" slot="item-icon"></iron-icon>
+            <div class="text">[[preferredLanguage]]</div>
+        </paper-icon-item>
+
+
+
+
+
+    </template>
+
+    <script>
+        class PreferredLanguageElement extends Polymer.Element {
+            static get is() { return 'preferred-language-element'; }
+            static get properties() {
+                return {
+                    preferredLanguage: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+        }
+        customElements.define(PreferredLanguageElement.is, PreferredLanguageElement);
+    </script>
+
+</dom-module>

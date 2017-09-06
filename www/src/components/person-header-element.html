@@ -1,0 +1,41 @@
+<link rel="import" href="/includes.html">
+
+<dom-module id="person-header-element">
+
+    <template>
+        <style include="custom-styles">
+            paper-avatar {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            paper-avatar.large {
+                --paper-avatar-width: 15vw;
+            }
+        </style>
+
+
+        <paper-avatar label="[[cn]]" class="horizontal-center large"></paper-avatar>
+        <div class="text-align-center">[[cn]] &nbsp;([[uid]])</div>
+    </template>
+
+    <script>
+        class PersonHeaderElement extends Polymer.Element {
+            static get is() { return 'person-header-element'; }
+            static get properties() {
+                return {
+                    cn: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    uid: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+        }
+        customElements.define(PersonHeaderElement.is, PersonHeaderElement);
+    </script>
+
+</dom-module>
