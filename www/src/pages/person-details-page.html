@@ -37,6 +37,7 @@
             }
         </style>
 
+DETAILS
         <paper-header-panel class="blue">
             <div slot="header">
                 <paper-icon-button id="backbutton" icon="icons:arrow-back" on-tap="_goBack"></paper-icon-button>
@@ -45,9 +46,10 @@
         </paper-header-panel>
 
         <person-function-element class="unselectable" department="[[department]]" title="[[title]]"></person-function-element>
-        <swipe-phone-element  mobile="[[mobile]]"></swipe-phone-element>
-        <paper-contact-email class="unselectable">[[mail]]</paper-contact-email>
         <preferred-language-element class="unselectable" preferred-language="[[preferredLanguage]]"></preferred-language-element>
+        
+        <paper-contact-phone phone-number="[[mobile]]">[[mobile]]</paper-contact-phone>
+        <paper-contact-email>[[mail]]</paper-contact-email>
 
     </template>
 

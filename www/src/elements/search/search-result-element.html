@@ -9,13 +9,10 @@
                 text-align: center;
             }
 
-            #callbutton {
-                position: relative;
-                margin-right: 0;
+            paper-avatar {
+                margin-left: -50px;
             }
-           
 
-            
         </style>
 
         <div role="listbox">
@@ -29,8 +26,6 @@
                     </paper-item-body>
                     <paper-icon-button on-tap="callPhone" icon="communication:phone"></paper-icon-button>
                 </paper-icon-item>
-
-
             </paper-card>
         </div>
 
@@ -43,20 +38,16 @@
             static get properties() {
                 return {
                     cn: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     department: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     title: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     mobile: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     }
                 }
             }

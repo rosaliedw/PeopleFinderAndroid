@@ -6,25 +6,18 @@
 <link rel="import" href="/includes.html">
 
 
-<dom-module id="dashboard-page">
+<dom-module id="search-page">
 
     <template>
-
         <style include="custom-styles">
-
         </style>
 
-
+        SEARCH
         <paper-search-bar query="{{searchQuery}}" hide-filter-button="true">
         </paper-search-bar>
         <br>
-        <iron-ajax 
-        id="personajax" 
-        url="http://localhost:8080/person/{{searchQuery}}"
-         method='GET'
-          loading="{{loading}}" 
-          handleAs="json"
-          on-response="handleResponse">
+        <iron-ajax id="personajax" url="http://localhost:8080/person/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
+            on-response="handleResponse">
         </iron-ajax>
 
         <template is="dom-if" if="{{loading}}">
@@ -33,7 +26,7 @@
         <template is="dom-if" if="{{!loading}}">
             <dom-repeat items="{{searchResults}}">
                 <template>
-                    <search-result-element cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]" mobile="[[item.mobile]]">
+                    <search-result-element on-tap="_goToDetails()" cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]" mobile="[[item.mobile]]">
                     </search-result-element>
                     <br>
                 </template>
@@ -42,8 +35,8 @@
     </template>
 
     <script>
-        class DashboardPage extends Polymer.Element {
-            static get is() { return 'dashboard-page'; }
+        class SearchPage extends Polymer.Element {
+            static get is() { return 'search-page'; }
             static get properties() {
                 return {
                     loading: {
@@ -52,22 +45,19 @@
                     },
                     searchQuery: {
                         type: String,
-                        reflectToAttribute: true,
                         observer: 'search'
                     },
                     searchResults: {
                         type: Array,
-                        reflectToAttribute: true
                     },
                     mockData: {
                         type: Array,
-                        reflectToAttribute: true,
                         notify: true,
                         value: []
                     }
                 }
             }
-           
+
 
             ready() {
                 super.ready();
@@ -87,6 +77,7 @@
                 }
 
                 console.log(this.mockData);
+                this.searchResults = this.mockData;
             }
 
             search() {
@@ -104,18 +95,23 @@
             }
 
             handleResponse(e) {
-                //TODO parse response object to array
                 this.searchResults = e.detail.response;
+                
             }
 
             hasNumber(item) {
                 return /\d/.test(item);
             }
 
+            _goToDetails() {
+                console.log('in gotodetails');
+                this.set('route.path', '/details/');
+            }
+
 
 
         }
-        customElements.define(DashboardPage.is, DashboardPage);
+        customElements.define(SearchPage.is, SearchPage);
     </script>
 
 </dom-module>

@@ -21,7 +21,7 @@
     }
     /* styling for render while resources are loading */
 
-    dashboard-page[unresolved] {
+    search-page[unresolved] {
       display: block;
       min-height: 101vh;
       line-height: 68px;
@@ -39,13 +39,28 @@
 
 <body>
 
-  <dashboard-page unresolved></dashboard-page> 
+  <!-- <search-page unresolved></search-page>  -->
+
 
   <!-- <person-details-page cn="Yoran Cobben" uid="il79gb" department="NSP" title="uncodified" mobile="0499269024" mail="yoran.cobben@ing.be"
     preferred-language="nl"> </person-details-page> -->
 
+
   <link rel="import" href="includes.html">
 
+
+
+  <app-location route="{{route}}"></app-location>
+  <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+  <iron-pages selected="{{routeData.view}}" attr-for-selected="name">
+    <search-page name="search"></search-page>
+    <person-details-page name="details"></person-details-page>
+  </iron-pages>
+
+
 </body>
+
+
 
 </html>
