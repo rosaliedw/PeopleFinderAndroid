@@ -12,7 +12,15 @@
         <style include="custom-styles">
         </style>
 
-        SEARCH
+<app-location route="{{route}}"></app-location>
+
+<!-- this app-route manages the top-level routes -->
+<app-route
+    route="{{route}}"
+    pattern="/:view"
+    data="{{routeData}}"
+    tail="{{subroute}}"></app-route>
+
         <paper-search-bar query="{{searchQuery}}" hide-filter-button="true">
         </paper-search-bar>
         <br>
@@ -26,7 +34,7 @@
         <template is="dom-if" if="{{!loading}}">
             <dom-repeat items="{{searchResults}}">
                 <template>
-                    <search-result-element on-tap="_goToDetails()" cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]" mobile="[[item.mobile]]">
+                    <search-result-element item="[[item]]" on-tap="_goToDetails" cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]" mobile="[[item.mobile]]">
                     </search-result-element>
                     <br>
                 </template>
@@ -103,9 +111,20 @@
                 return /\d/.test(item);
             }
 
-            _goToDetails() {
+            _goToDetails(e) {
                 console.log('in gotodetails');
-                this.set('route.path', '/details/');
+                console.log(e.target.item);
+
+                var el = e.target.item;
+                this.set('route.path.cn', el.cn );
+                this.set('route.path.uid', el.uid );
+                this.set('route.path.department', el.department );                
+                this.set('route.path.title', el.title );
+                this.set('route.path.mobile', el.mobile );
+                this.set('route.path.mail', el.mail );
+                this.set('route.path.preferred-language', el.preferredlanguage);
+                
+                this.set('route.path', '/person-details/'); 
             }
 
 
@@ -115,3 +134,8 @@
     </script>
 
 </dom-module>
+
+
+
+<person-details-page cn="Yoran Cobben" uid="il79gb" department="NSP" title="uncodified" mobile="0499269024" mail="yoran.cobben@ing.be"
+preferred-language="nl"> </person-details-page>
