@@ -66,10 +66,7 @@
 
             ready() {
                 super.ready();
-                this.removeAttribute('unresolved');
-
                 //MOCK SOME DATA
-
                 for (var i = 0; i < 100; i++) {
 
                     this.push('mockData', {
@@ -103,7 +100,6 @@
 
             handleResponse(e) {
                 this.searchResults = e.detail.response;
-
             }
 
             hasNumber(item) {
@@ -116,21 +112,8 @@
                 for (var i in el) {
                     this.set('queryParams.' + i, el[i]);
                 }
-                // this.set('queryParams.cn', el.cn);
-                // this.set('queryParams.department', el.department);
-                // this.set('queryParams.title', el.title);
-                // this.set('queryParams.mobile', el.mobile);
-                // this.set('queryParams.uid', el.uid);
-
-                // this.set('queryParams.mail', el.mail);
-                // this.set('queryParams.preferredlanguage', el.preferredlanguage);
-
-
                 this.set('route.path', '/person-details/');
             }
-
-
-
         }
         customElements.define(SearchPage.is, SearchPage);
     </script>

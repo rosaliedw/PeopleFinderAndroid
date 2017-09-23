@@ -1,4 +1,4 @@
-<link rel="import" href="/includes.html" />
+<link rel="import" href="../includes.html" />
 <dom-module id="people-finder-app">
     <template>
         <app-location route="{{route}}"></app-location>
@@ -23,6 +23,10 @@
             observers: [
                 '_routePageChanged(routeData.page)'
             ],
+            
+            ready(){
+                this.removeAttribute('unresolved');
+            },
 
             _routePageChanged(page) {
                 this.page = page || 'search';
