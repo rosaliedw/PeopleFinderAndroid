@@ -10,17 +10,10 @@
 
     <template>
         <style include="custom-styles">
+
         </style>
-
-<app-location route="{{route}}"></app-location>
-
-<!-- this app-route manages the top-level routes -->
-<app-route
-    route="{{route}}"
-    pattern="/:view"
-    data="{{routeData}}"
-    tail="{{subroute}}"></app-route>
-
+        <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
+        <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
         <paper-search-bar query="{{searchQuery}}" hide-filter-button="true">
         </paper-search-bar>
         <br>
@@ -34,7 +27,8 @@
         <template is="dom-if" if="{{!loading}}">
             <dom-repeat items="{{searchResults}}">
                 <template>
-                    <search-result-element item="[[item]]" on-tap="_goToDetails" cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]" mobile="[[item.mobile]]">
+                    <search-result-element item="[[item]]" on-tap="_goToDetails" cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]"
+                        mobile="[[item.mobile]]">
                     </search-result-element>
                     <br>
                 </template>
@@ -62,6 +56,9 @@
                         type: Array,
                         notify: true,
                         value: []
+                    },
+                    route: {
+                        type: Object
                     }
                 }
             }
@@ -80,7 +77,9 @@
                         department: faker.name.jobArea(),
                         title: faker.name.jobType(),
                         mobile: faker.phone.phoneNumber(),
-                        id: faker.helpers.replaceSymbols('??##??')
+                        uid: faker.helpers.replaceSymbols('??##??'),
+                        mail: faker.internet.email(),
+                        preferredlanguage: faker.address.countryCode()
                     });
                 }
 
@@ -104,7 +103,7 @@
 
             handleResponse(e) {
                 this.searchResults = e.detail.response;
-                
+
             }
 
             hasNumber(item) {
@@ -112,19 +111,22 @@
             }
 
             _goToDetails(e) {
-                console.log('in gotodetails');
-                console.log(e.target.item);
-
                 var el = e.target.item;
-                this.set('route.path.cn', el.cn );
-                this.set('route.path.uid', el.uid );
-                this.set('route.path.department', el.department );                
-                this.set('route.path.title', el.title );
-                this.set('route.path.mobile', el.mobile );
-                this.set('route.path.mail', el.mail );
-                this.set('route.path.preferred-language', el.preferredlanguage);
-                
-                this.set('route.path', '/person-details/'); 
+
+                for (var i in el) {
+                    this.set('queryParams.' + i, el[i]);
+                }
+                // this.set('queryParams.cn', el.cn);
+                // this.set('queryParams.department', el.department);
+                // this.set('queryParams.title', el.title);
+                // this.set('queryParams.mobile', el.mobile);
+                // this.set('queryParams.uid', el.uid);
+
+                // this.set('queryParams.mail', el.mail);
+                // this.set('queryParams.preferredlanguage', el.preferredlanguage);
+
+
+                this.set('route.path', '/person-details/');
             }
 
 
@@ -134,8 +136,3 @@
     </script>
 
 </dom-module>
-
-
-
-<person-details-page cn="Yoran Cobben" uid="il79gb" department="NSP" title="uncodified" mobile="0499269024" mail="yoran.cobben@ing.be"
-preferred-language="nl"> </person-details-page>

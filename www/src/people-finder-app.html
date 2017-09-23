@@ -1,41 +1,36 @@
-<link rel="import" href="/includes.html"/>
+<link rel="import" href="/includes.html" />
 <dom-module id="people-finder-app">
     <template>
-    
-	   	<!-- setup routes -->
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-	   	
-	   	<iron-pages selected="[[page]]" attr-for-selected="name"  role="main">
-            <person-details-page name="person-details">
-           	</person-details-page>
+
+        <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
             <search-page name="search"></search-page>
+            <person-details-page name="person-details"></person-details-page>
         </iron-pages>
-        
+
     </template>
     <script>
-    Polymer({
-        is: 'people-finder-app',
-        properties: {
-        	page: {
-                type: String,
-                reflectToAttribute: true,
-                observer: '_pageChanged'
+        Polymer({
+            is: 'people-finder-app',
+            properties: {
+                page: {
+                    type: String,
+                    reflectToAttribute: true,
+                    observer: '_pageChanged'
+                }
+            },
+            observers: [
+                '_routePageChanged(routeData.page)'
+            ],
+
+            _routePageChanged(page) {
+                this.page = page || 'search';
+            },
+
+            _pageChanged(page) {
+                var resolvedPageUrl = this.resolveUrl('pages/' + page + '-page.html');
             }
-        },
-        observers: [
-            '_routePageChanged(routeData.page)'
-        ],
-
-        _routePageChanged(page) {
-            this.page = page || 'home';
-        },
-
-        _pageChanged(page) {
-            var resolvedPageUrl = this.resolveUrl('pages/' + page + '-page.html');
-        },
-
-       
-    });
+        });
     </script>
 </dom-module>
