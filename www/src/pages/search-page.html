@@ -20,6 +20,12 @@
         <iron-ajax id="personajax" url="http://localhost:8080/person/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
             on-response="handleResponse">
         </iron-ajax>
+        <iron-ajax id="phoneajax" url="http://localhost:8080/mobile/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
+            on-response="handleResponse">
+        </iron-ajax>
+        <iron-ajax id="corpidajax" url="http://localhost:8080/corporateKey/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
+            on-response="handleResponse">
+        </iron-ajax>
 
         <template is="dom-if" if="{{loading}}">
             <paper-spinner active class="horizontal-center"></paper-spinner>
@@ -67,30 +73,39 @@
             ready() {
                 super.ready();
                 //MOCK SOME DATA
-                for (var i = 0; i < 100; i++) {
 
-                    this.push('mockData', {
-                        cn: faker.name.findName(),
-                        department: faker.name.jobArea(),
-                        title: faker.name.jobType(),
-                        mobile: faker.phone.phoneNumber(),
-                        uid: faker.helpers.replaceSymbols('??##??'),
-                        mail: faker.internet.email(),
-                        preferredlanguage: faker.address.countryCode()
-                    });
+                if (0) {
+                    for (var i = 0; i < 100; i++) {
+
+                        this.push('mockData', {
+                            cn: faker.name.findName(),
+                            department: faker.name.jobArea(),
+                            title: faker.name.jobType(),
+                            mobile: faker.phone.phoneNumber(),
+                            uid: faker.helpers.replaceSymbols('??##??'),
+                            mail: faker.internet.email(),
+                            preferredlanguage: faker.address.countryCode()
+                        });
+                    }
+                    this.searchResults = this.mockData;
                 }
-
-                console.log(this.mockData);
-               // this.searchResults = this.mockData;
             }
 
             search() {
                 if (this.searchQuery.length >= 3) {
                     this.loading = true;
-                    this.$.personajax.generateRequest();
+                    if (!this.hasNumber(this.searchQuery)) {
+                        this.$.personajax.generateRequest();
+                    } else if (this.hasNumber(this.searchQuery) && !this.hasLetter(this.searchQuery)) {
+                        this.$.phoneajax.generateRequest();
+
+                    } else if (this.hasNumber(this.searchQuery) && this.hasLetter(this.searchQuery)) {
+                        this.$.corpidajax.generateRequest();
+
+                    }
                     this.searchResults = [];
-                }
-                else {
+
+                } else {
                     this.loading = false;
                 }
                 if (this.searchQuery.length === 0) {
@@ -104,6 +119,10 @@
 
             hasNumber(item) {
                 return /\d/.test(item);
+            }
+
+            hasLetter(item) {
+                return /[a-z]/i.test(item);
             }
 
             _goToDetails(e) {
