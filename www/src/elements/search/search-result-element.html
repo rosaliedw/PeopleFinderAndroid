@@ -59,8 +59,9 @@
                 super.ready();
             }
 
-            callPhone() {
+            callPhone(e) {
                 window.location.href = 'tel:' + this.mobile;
+                e.stopPropagation();
             }
 
         }
