@@ -31,12 +31,15 @@
             }
 
             #backbutton {
-                position: absolute;
+                position: relative;
+                float: left;
                 margin-left: 0;
                 margin-top: 5px;
             }
         </style>
-
+        <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
+        <app-route route="{{route}}" pattern="/:view/:cn/:uid/:department/:title/:mobile/:mail/:preferredlanguage" data="{{routeData}}"
+            tail="{{subroute}}"></app-route>
         <paper-header-panel class="blue">
             <div slot="header">
                 <paper-icon-button id="backbutton" icon="icons:arrow-back" on-tap="_goBack"></paper-icon-button>
@@ -45,9 +48,10 @@
         </paper-header-panel>
 
         <person-function-element class="unselectable" department="[[department]]" title="[[title]]"></person-function-element>
-        <swipe-phone-element  mobile="[[mobile]]"></swipe-phone-element>
-        <paper-contact-email class="unselectable">[[mail]]</paper-contact-email>
-        <preferred-language-element class="unselectable" preferred-language="[[preferredLanguage]]"></preferred-language-element>
+        <preferred-language-element class="unselectable" preferred-language="[[preferredlanguage]]"></preferred-language-element>
+
+        <paper-contact-phone phone-number="[[mobile]]">[[mobile]]</paper-contact-phone>
+        <paper-contact-email>[[mail]]</paper-contact-email>
 
     </template>
 
@@ -57,38 +61,41 @@
             static get properties() {
                 return {
                     cn: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     uid: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     department: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     title: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     mobile: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     mail: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
-                    preferredLanguage: {
-                        type: String,
-                        reflectToAttribute: true
+                    preferredlanguage: {
+                        type: String
+                    },
+                    queryParams: {
+                        type: Object,
+                        observer: '_routeParamsChanged'
                     }
                 }
             }
 
+            _routeParamsChanged(newValue) {
+                for (var i in this.queryParams) {
+                    this[i] = this.queryParams[i];
+                }
+            }
             _goBack() {
-                window.history.back();
+                this.set('queryParams', {});
+                this.set('route.path', '/search/');
             }
         }
         customElements.define(PersonDetailsPage.is, PersonDetailsPage);

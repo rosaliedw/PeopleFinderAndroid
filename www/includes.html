@@ -1,4 +1,5 @@
 <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+<link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/polymer/polymer-element.html">
 <link rel="import" href="bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
@@ -8,10 +9,6 @@
 
 <link rel="import" href="bower_components/app-route/app-route.html">
 
-<link rel="import" href="bower_components/polymer/lib/mixins/gesture-event-listeners.html">
-
-
-
 <!-- IRON -->
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
@@ -20,8 +17,6 @@
 <link rel="import" href="bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="bower_components/iron-icons/communication-icons.html">
 <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
-
-
 
 <!-- PAPER -->
 <link rel="import" href="bower_components/paper-search/paper-search-bar.html">
@@ -33,33 +28,31 @@
 <link rel="import" href="bower_components/paper-button/paper-button.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/paper-spinner/paper-spinner.html">
-<link rel="import" href="bower_components/paper-contact/paper-contact-phone.html">
+<link rel="import" href="bower_components/paper-spinner/paper-spinner-lite.html">
+
 <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="bower_components/paper-avatar/paper-avatar.html">
-
-
+<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="bower_components/paper-contact/paper-contact-behavior.html">
+<link rel="import" href="bower_components/paper-contact/paper-contact-shared-styles.html">
 
 <!-- STYLES -->
 <link rel="import" href="custom-styles.html">
 
 <!-- Custom elements -->
-<link rel="import" href="src/services/get-person-service.html">
 
-<link rel="import" href="src/pages/dashboard-page.html">
+<link rel="import" href="src/people-finder-app.html">
+
+<!-- pages -->
+<link rel="import" href="src/pages/search-page.html">
 <link rel="import" href="src/pages/person-details-page.html">
 
-<link rel="import" href="src/components/search-result-element.html">
-<link rel="import" href="src/components/paper-contact-email.html">
-<link rel="import" href="src/components/person-header-element.html">
-<link rel="import" href="src/components/preferred-language-element.html">
+<!-- search -->
+<link rel="import" href="src/elements/search/search-result-element.html">
 
-<link rel="import" href="src/components/person-function-element.html">
-
-
-<link rel="import" href="src/components/swipe-phone-element.html">
-
-<link rel="import" href="src/components/swipe-animation-element.html">
-
-
-
-
+<!-- details -->
+<link rel="import" href="src/elements/details/person-header-element.html">
+<link rel="import" href="src/elements/details/person-function-element.html">
+<link rel="import" href="src/elements/details/preferred-language-element.html">
+<link rel="import" href="src/elements/details/paper-contact-email.html">
+<link rel="import" href="src/elements/details/paper-contact-phone.html">

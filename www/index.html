@@ -12,16 +12,14 @@
   <link rel="manifest" href="manifest.json">
 
   <style>
-    body {
+     body {
       margin: 0;
       font-family: 'Roboto', 'Noto', sans-serif;
       font-size: 13px;
       line-height: 1.5;
       min-height: 100vh;
     }
-    /* styling for render while resources are loading */
-
-    dashboard-page[unresolved] {
+    people-finder-app[unresolved] {
       display: block;
       min-height: 101vh;
       line-height: 68px;
@@ -34,18 +32,11 @@
       overflow: visible;
     }
   </style>
-
 </head>
 
 <body>
-
-  <dashboard-page unresolved></dashboard-page> 
-
-  <!-- <person-details-page cn="Yoran Cobben" uid="il79gb" department="NSP" title="uncodified" mobile="0499269024" mail="yoran.cobben@ing.be"
-    preferred-language="nl"> </person-details-page> -->
-
+  <people-finder-app unresolved></people-finder-app>
   <link rel="import" href="includes.html">
-
 </body>
 
 </html>
