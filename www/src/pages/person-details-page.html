@@ -11,19 +11,15 @@
                 padding: 40px;
             }
 
-            .blue [slot=header] {
-                background-color: var(--paper-light-blue-500);
-            }
-
             paper-header-panel {
                 width: 100%;
                 height: 100%;
-                @apply --shadow-elevation-2dp;
+                background-color: var(--paper-light-blue-900);
             }
 
             [slot=header] {
                 height: auto;
-                font-size: 16px;
+                font-size: 28px;
                 line-height: 60px;
                 padding: 0 10px;
                 color: white;
@@ -36,22 +32,80 @@
                 margin-left: 0;
                 margin-top: 5px;
             }
+
+
+            .disabled {
+                opacity: 0.5;
+                pointer-events: none;
+            }
+
+            paper-input {
+                padding-left: 10%;
+                padding-right: 10%;
+            }
         </style>
+
+
         <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
         <app-route route="{{route}}" pattern="/:view/:cn/:uid/:department/:title/:mobile/:mail/:preferredlanguage" data="{{routeData}}"
-            tail="{{subroute}}"></app-route>
-        <paper-header-panel class="blue">
-            <div slot="header">
-                <paper-icon-button id="backbutton" icon="icons:arrow-back" on-tap="_goBack"></paper-icon-button>
-                <person-header-element cn="[[cn]]" uid="[[uid]]"></person-header-element>
+            tail="{{subroute}}"></app-rou te>
+            <paper-header-panel mode="seamed">
+                <div slot="header">
+                    <paper-icon-button id="backbutton" icon="icons:arrow-back" on-tap="_goBack"></paper-icon-button>
+                    <person-header-element cn="[[cn]]" uid="[[uid]]"></person-header-element>
+                </div>
+            </paper-header-panel>
+
+
+
+            <paper-icon-item>
+                <iron-icon icon="icons:work" slot="item-icon">
+                </iron-icon>
+                <paper-item-body two-line>
+                    <div>[[department]], [[title]]</div>
+                    <div secondary>Department and function</div>
+                </paper-item-body>
+            </paper-icon-item>
+
+
+            <template is="dom-if" if="{{isPreferredLanguageSet}}">
+                <paper-icon-item>
+                    <iron-icon icon="icons:language" slot="item-icon">
+                    </iron-icon>
+                    <paper-item-body two-line>
+                        <div>[[preferredlanguage]]</div>
+                        <div secondary>Preferred language</div>
+                    </paper-item-body>
+                </paper-icon-item>
+            </template>
+
+
+            <div>
+                <paper-icon-item on-tap="_makePhoneCall">
+
+                    <iron-icon icon="communication:phone" slot="item-icon">
+                    </iron-icon>
+                    <paper-item-body two-line>
+                        <paper-ripple></paper-ripple>
+                        <div>[[mobile]]</div>
+                        <div secondary>Mobile</div>
+                    </paper-item-body>
+                    <paper-icon-button on-tap="_sendSms" icon="communication:textsms">
+                    </paper-icon-button>
+                    </iron-icon>
+                </paper-icon-item>
             </div>
-        </paper-header-panel>
 
-        <person-function-element class="unselectable" department="[[department]]" title="[[title]]"></person-function-element>
-        <preferred-language-element class="unselectable" preferred-language="[[preferredlanguage]]"></preferred-language-element>
 
-        <paper-contact-phone phone-number="[[mobile]]">[[mobile]]</paper-contact-phone>
-        <paper-contact-email>[[mail]]</paper-contact-email>
+            <paper-icon-item on-tap="_mailTo">
+                <iron-icon icon="communication:email" slot="item-icon">
+                </iron-icon>
+                <paper-item-body two-line>
+                    <paper-ripple></paper-ripple>
+                    <div>[[mail]]</div>
+                    <div secondary>Email</div>
+                </paper-item-body>
+            </paper-icon-item>
 
     </template>
 
@@ -60,30 +114,12 @@
             static get is() { return 'person-details-page'; }
             static get properties() {
                 return {
-                    cn: {
-                        type: String
-                    },
-                    uid: {
-                        type: String
-                    },
-                    department: {
-                        type: String
-                    },
-                    title: {
-                        type: String
-                    },
-                    mobile: {
-                        type: String
-                    },
-                    mail: {
-                        type: String
-                    },
-                    preferredlanguage: {
-                        type: String
-                    },
                     queryParams: {
                         type: Object,
                         observer: '_routeParamsChanged'
+                    },
+                    isPreferredLanguageSet: {
+                        type: Boolean
                     }
                 }
             }
@@ -92,10 +128,29 @@
                 for (var i in this.queryParams) {
                     this[i] = this.queryParams[i];
                 }
+
+                this.isPreferredLanguageSet = this.preferredlanguage === undefined ? false : true;
+
             }
             _goBack() {
                 this.set('queryParams', {});
                 this.set('route.path', '/search/');
+                this.set('preferredlanguage', undefined);
+            }
+
+            _isDisabled(arg) {
+                return arg === undefined ? 'disabled' : '';
+            }
+
+            _makePhoneCall() {
+                window.location.assign(encodeURI('tel:' + this.mobile));
+            }
+            _sendSms(e) {
+                e.stopPropagation();
+                window.location.assign(encodeURI('sms:' + this.mobile));
+            }
+            _mailTo() {
+                window.location.assign(encodeURI('mailto:' + this.mail));
             }
         }
         customElements.define(PersonDetailsPage.is, PersonDetailsPage);

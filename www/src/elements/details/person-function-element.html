@@ -4,11 +4,10 @@
 
     <template>
         <style include="custom-styles">
-           
         </style>
 
 
-  
+
         <paper-icon-item class="cursor-pointer">
             <paper-ripple></paper-ripple>
             <iron-icon class="icon" icon="icons:work" slot="item-icon"></iron-icon>
@@ -22,14 +21,12 @@
         class PersonFunctionElement extends Polymer.Element {
             static get is() { return 'person-function-element'; }
             static get properties() {
-                return {                   
+                return {
                     department: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     },
                     title: {
-                        type: String,
-                        reflectToAttribute: true
+                        type: String
                     }
                 }
             }

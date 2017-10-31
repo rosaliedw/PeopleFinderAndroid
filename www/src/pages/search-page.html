@@ -1,5 +1,5 @@
 <!--USED TO MOCK SOME DATA -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.js"></script>
+<script src="/faker/faker.js"></script>
 
 <link rel="import" href="/bower_components/polymer/polymer-element.html">
 
@@ -10,22 +10,26 @@
 
     <template>
         <style include="custom-styles">
-
         </style>
+        <!-- <app-location route="{{route}}" query-params="{{queryParams}}"></app-location> -->
         <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
         <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}"></app-route>
         <paper-search-bar query="{{searchQuery}}" hide-filter-button="true">
         </paper-search-bar>
         <br>
-        <iron-ajax id="personajax" url="http://localhost:8080/person/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
+
+        <iron-ajax id="personajax" url="http://10.230.220.241:8000/person/[[searchQuery]]" method='GET' loading="{{loading}}" handleAs="json"
             on-response="handleResponse">
         </iron-ajax>
-        <iron-ajax id="phoneajax" url="http://localhost:8080/mobile/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
+
+        <iron-ajax id="mobileajax" url="http://10.230.220.241:8000/mobile/[[searchQuery]]" method='GET' loading="{{loading}}" handleAs="json"
             on-response="handleResponse">
         </iron-ajax>
-        <iron-ajax id="corpidajax" url="http://localhost:8080/corporateKey/{{searchQuery}}" method='GET' loading="{{loading}}" handleAs="json"
-            on-response="handleResponse">
+
+        <iron-ajax id="corporateKeyajax" url="http://10.230.220.241:8000/corporateKey/[[searchQuery]]" method='GET' loading="{{loading}}"
+            handleAs="json" on-response="handleResponse">
         </iron-ajax>
+
 
         <template is="dom-if" if="{{loading}}">
             <paper-spinner active class="horizontal-center"></paper-spinner>
@@ -33,9 +37,7 @@
         <template is="dom-if" if="{{!loading}}">
             <dom-repeat items="{{searchResults}}">
                 <template>
-                    <search-result-element item="[[item]]" on-tap="_goToDetails" cn="[[item.cn]]" department="[[item.department]]" title="[[item.title]]"
-                        mobile="[[item.mobile]]">
-                    </search-result-element>
+                    <search-result-element item="[[item]]" on-tap="_goToDetails"></search-result-element>
                     <br>
                 </template>
             </dom-repeat>
@@ -58,11 +60,6 @@
                     searchResults: {
                         type: Array,
                     },
-                    mockData: {
-                        type: Array,
-                        notify: true,
-                        value: []
-                    },
                     route: {
                         type: Object
                     }
@@ -72,12 +69,37 @@
 
             ready() {
                 super.ready();
+
+
                 //MOCK SOME DATA
 
-                if (0) {
+                if (1) {
+
+
+                    // this.searchResults = [
+                    //     {
+                    //         cn: 'Yoran Cobben',
+                    //         uid: 'IL79GB',
+                    //         department: 'NSP',
+                    //         title: 'Analyst Programmer',
+                    //         mobile: '0499269024',
+                    //         mail: 'yoran.cobben@ing.com',
+                    //         preferredlanguage: 'NL'
+                    //     },
+                    //     {
+                    //         cn: 'Mark Verbruggen',
+                    //         uid: 'CX45WE',
+                    //         department: 'Analytics',
+                    //         title: 'chapter lead',
+                    //         mobile: '0497904839',
+                    //         mail: 'mark.verbruggen@ing.com'
+                    //     }
+                    // ];
+
+
                     for (var i = 0; i < 100; i++) {
 
-                        this.push('mockData', {
+                        this.push('searchResults', {
                             cn: faker.name.findName(),
                             department: faker.name.jobArea(),
                             title: faker.name.jobType(),
@@ -87,7 +109,6 @@
                             preferredlanguage: faker.address.countryCode()
                         });
                     }
-                    this.searchResults = this.mockData;
                 }
             }
 
@@ -97,10 +118,10 @@
                     if (!this.hasNumber(this.searchQuery)) {
                         this.$.personajax.generateRequest();
                     } else if (this.hasNumber(this.searchQuery) && !this.hasLetter(this.searchQuery)) {
-                        this.$.phoneajax.generateRequest();
+                        this.$.mobileajax.generateRequest();
 
                     } else if (this.hasNumber(this.searchQuery) && this.hasLetter(this.searchQuery)) {
-                        this.$.corpidajax.generateRequest();
+                        this.$.corporateKeyajax.generateRequest();
 
                     }
                     this.searchResults = [];
@@ -127,6 +148,8 @@
 
             _goToDetails(e) {
                 var el = e.target.item;
+
+                //TODO: DONT PUT EVERYTHING IN THE URL BUT IN THE STATE, ITS NICER LIKE THAT
 
                 for (var i in el) {
                     this.set('queryParams.' + i, el[i]);

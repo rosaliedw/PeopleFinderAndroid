@@ -7,21 +7,37 @@
 				position: absolute;
 				right: 5%;
 			}
+
+			paper-input {
+				padding-left: 10%;
+				padding-right: 10%;
+			}
+
+			.unselectable {
+				pointer-events: none;
+			}
 		</style>
 
-		<paper-icon-item class="item" on-tap="openInSameTab">
+		<paper-input on-tap="_makePhoneCall" class="unselectable" always-float-label label="Mobile" value="[[phoneNumber]]">
+		</paper-input>
+
+
+
+
+		<!-- <paper-icon-item class="item" on-tap="_makePhoneCall">
 			<paper-ripple></paper-ripple>
 			<iron-icon class="icon" icon="communication:phone" slot="item-icon"></iron-icon>
-			<div class="text"><slot></slot></div>
+			<div>[[phoneNumber]]</div>
 		</paper-icon-item>
-		<paper-icon-button id="sms-icon" class="icon" icon="communication:textsms" on-tap="_sendSms"></iron-icon-button>
+		<paper-icon-button id="sms-icon" class="icon" icon="communication:textsms" on-tap="_sendSms">
+			</iron-icon-button> -->
 
 	</template>
 
 </dom-module>
 
 <script>
-	class PaperContactPhone extends Polymer.mixinBehaviors([Polymer.PaperContactBehavior], Polymer.Element) {
+	class PaperContactPhone extends Polymer.Element {
 		static get is() { return 'paper-contact-phone'; }
 		static get properties() {
 			return {
@@ -30,12 +46,10 @@
 				}
 			}
 		}
-		_getTargetUrl(content) {
-			return 'tel:' + content;
+		_makePhoneCall() {
+			window.location.assign(encodeURI('tel:' + this.phoneNumber));
 		}
-
 		_sendSms() {
-			console.log('in send sms');
 			window.location.assign(encodeURI('sms:' + this.phoneNumber));
 		}
 	}
