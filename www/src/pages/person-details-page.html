@@ -14,7 +14,7 @@
             paper-header-panel {
                 width: 100%;
                 height: 100%;
-                background-color: var(--paper-light-blue-900);
+                background-color: var(--paper-light-blue-a400);
             }
 
             [slot=header] {
@@ -23,7 +23,6 @@
                 line-height: 60px;
                 padding: 0 10px;
                 color: white;
-                transition: height 0.2s;
             }
 
             #backbutton {
@@ -33,15 +32,18 @@
                 margin-top: 5px;
             }
 
-
             .disabled {
-                opacity: 0.5;
                 pointer-events: none;
             }
 
-            paper-input {
-                padding-left: 10%;
-                padding-right: 10%;
+            .person-name {
+                position: relative;
+                bottom: 0;
+                left: 0;
+            }
+
+            img {
+                
             }
         </style>
 
@@ -52,37 +54,14 @@
             <paper-header-panel mode="seamed">
                 <div slot="header">
                     <paper-icon-button id="backbutton" icon="icons:arrow-back" on-tap="_goBack"></paper-icon-button>
-                    <person-header-element cn="[[cn]]" uid="[[uid]]"></person-header-element>
+                    <img src="/src/images/avatar.png">
+                    <div class="person-name">[[cn]]</div>
                 </div>
             </paper-header-panel>
 
 
-
-            <paper-icon-item>
-                <iron-icon icon="icons:work" slot="item-icon">
-                </iron-icon>
-                <paper-item-body two-line>
-                    <div>[[department]], [[title]]</div>
-                    <div secondary>Department and function</div>
-                </paper-item-body>
-            </paper-icon-item>
-
-
-            <template is="dom-if" if="{{isPreferredLanguageSet}}">
-                <paper-icon-item>
-                    <iron-icon icon="icons:language" slot="item-icon">
-                    </iron-icon>
-                    <paper-item-body two-line>
-                        <div>[[preferredlanguage]]</div>
-                        <div secondary>Preferred language</div>
-                    </paper-item-body>
-                </paper-icon-item>
-            </template>
-
-
-            <div>
+            <template is="dom-if" if="{{mobile}}">
                 <paper-icon-item on-tap="_makePhoneCall">
-
                     <iron-icon icon="communication:phone" slot="item-icon">
                     </iron-icon>
                     <paper-item-body two-line>
@@ -94,18 +73,50 @@
                     </paper-icon-button>
                     </iron-icon>
                 </paper-icon-item>
-            </div>
+            </template>
 
+            <template is="dom-if" if="{{mail}}">
+                <paper-icon-item on-tap="_mailTo">
+                    <iron-icon icon="communication:email" slot="item-icon">
+                    </iron-icon>
+                    <paper-item-body two-line>
+                        <paper-ripple></paper-ripple>
+                        <div>[[mail]]</div>
+                        <div secondary>Email</div>
+                    </paper-item-body>
+                </paper-icon-item>
+            </template>
 
-            <paper-icon-item on-tap="_mailTo">
-                <iron-icon icon="communication:email" slot="item-icon">
+            <paper-icon-item class="disabled">
+                <iron-icon icon="icons:work" slot="item-icon">
                 </iron-icon>
                 <paper-item-body two-line>
-                    <paper-ripple></paper-ripple>
-                    <div>[[mail]]</div>
-                    <div secondary>Email</div>
+                    <div>[[department]], [[title]]</div>
+                    <div secondary>Department and function</div>
                 </paper-item-body>
             </paper-icon-item>
+
+            <template is="dom-if" if="{{uid}}">
+                <paper-icon-item class="disabled">
+                    <iron-icon icon="icons:perm-identity" slot="item-icon">
+                    </iron-icon>
+                    <paper-item-body two-line>
+                        <div>[[uid]]</div>
+                        <div secondary>Corporate id</div>
+                    </paper-item-body>
+                </paper-icon-item>
+            </template>
+
+            <template is="dom-if" if="{{preferredlanguage}}">
+                <paper-icon-item class="disabled">
+                    <iron-icon icon="icons:language" slot="item-icon">
+                    </iron-icon>
+                    <paper-item-body two-line>
+                        <div>[[preferredlanguage]]</div>
+                        <div secondary>Preferred language</div>
+                    </paper-item-body>
+                </paper-icon-item>
+            </template>
 
     </template>
 
@@ -117,9 +128,6 @@
                     queryParams: {
                         type: Object,
                         observer: '_routeParamsChanged'
-                    },
-                    isPreferredLanguageSet: {
-                        type: Boolean
                     }
                 }
             }
@@ -128,18 +136,14 @@
                 for (var i in this.queryParams) {
                     this[i] = this.queryParams[i];
                 }
-
-                this.isPreferredLanguageSet = this.preferredlanguage === undefined ? false : true;
-
             }
             _goBack() {
                 this.set('queryParams', {});
                 this.set('route.path', '/search/');
-                this.set('preferredlanguage', undefined);
-            }
 
-            _isDisabled(arg) {
-                return arg === undefined ? 'disabled' : '';
+                this.mail = undefined;
+                this.mobile = undefined;
+                this.preferredlanguage = undefined;
             }
 
             _makePhoneCall() {

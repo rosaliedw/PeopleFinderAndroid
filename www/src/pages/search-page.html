@@ -10,6 +10,15 @@
 
     <template>
         <style include="custom-styles">
+            paper-spinner {
+                width: 50px;
+                height: 50px;
+                --paper-spinner-stroke-width: 6px;
+            }
+
+            paper-search-bar {
+                color: var(--paper-teal-a400);
+            }
         </style>
         <!-- <app-location route="{{route}}" query-params="{{queryParams}}"></app-location> -->
         <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
@@ -32,7 +41,7 @@
 
 
         <template is="dom-if" if="{{loading}}">
-            <paper-spinner active class="horizontal-center"></paper-spinner>
+            <paper-spinner active class="absolute-center"></paper-spinner>
         </template>
         <template is="dom-if" if="{{!loading}}">
             <dom-repeat items="{{searchResults}}">
@@ -82,8 +91,6 @@
                     //         uid: 'IL79GB',
                     //         department: 'NSP',
                     //         title: 'Analyst Programmer',
-                    //         mobile: '0499269024',
-                    //         mail: 'yoran.cobben@ing.com',
                     //         preferredlanguage: 'NL'
                     //     },
                     //     {
@@ -98,7 +105,6 @@
 
 
                     for (var i = 0; i < 100; i++) {
-
                         this.push('searchResults', {
                             cn: faker.name.findName(),
                             department: faker.name.jobArea(),
