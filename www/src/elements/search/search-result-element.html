@@ -13,16 +13,24 @@
                 margin-left: -50px;
             }
 
+            paper-card {
+                width: 95%;
+                margin-top: -10px;
+            }
+
+            paper-item-body {
+                margin-left: 5%;
+            }
+
         </style>
 
         <div role="listbox">
-            <paper-card style="width: 95%; margin-top: -10px">
+            <paper-card>
                 <paper-icon-item>
-                    <paper-avatar label="[[cn]]"></paper-avatar>
-
-                    <paper-item-body class="text-align-left" two-line style="margin-left: 5%;">
-                        <div>[[cn]]</div>
-                        <div secondary>[[department]], &nbsp;[[title]]</div>
+                    <paper-avatar label="[[item.cn]]"></paper-avatar>
+                    <paper-item-body class="text-align-left" two-line>
+                        <div>[[item.cn]]</div>
+                        <div secondary>[[item.department]], &nbsp;[[item.title]]</div>
                     </paper-item-body>
                     <paper-icon-button on-tap="callPhone" icon="communication:phone"></paper-icon-button>
                 </paper-icon-item>
@@ -37,18 +45,7 @@
             static get is() { return 'search-result-element'; }
             static get properties() {
                 return {
-                    cn: {
-                        type: String
-                    },
-                    department: {
-                        type: String
-                    },
-                    title: {
-                        type: String
-                    },
-                    mobile: {
-                        type: String
-                    }
+                    item: Object
                 }
             }
             constructor() {
@@ -60,7 +57,7 @@
             }
 
             callPhone(e) {
-                window.location.href = 'tel:' + this.mobile;
+                window.location.href = 'tel:' + this.item.mobile;
                 e.stopPropagation();
             }
 

@@ -16,18 +16,12 @@
             properties: {
                 page: {
                     type: String,
-                    reflectToAttribute: true,
                     observer: '_pageChanged'
                 }
             },
             observers: [
                 '_routePageChanged(routeData.page)'
             ],
-            
-            ready(){
-                this.removeAttribute('unresolved');
-            },
-
             _routePageChanged(page) {
                 this.page = page || 'search';
             },
