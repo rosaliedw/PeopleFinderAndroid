@@ -26,8 +26,5 @@
     "paper-header-panel": "PolymerElements/paper-header-panel#^2.0.0",
     "paper-avatar": "Abe90/paper-avatar#^1.0.4",
     "paper-input": "PolymerElements/paper-input#^2.0.2"
-  },
-  "devDependencies": {
-    "web-component-tester": "^6.0.0"
   }
 }
